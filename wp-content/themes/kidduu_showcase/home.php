@@ -7,7 +7,7 @@ get_header();
 ?>
 <section class="content home">
 
-    <h1>HOME</h1>
+    <h1>test 1</h1>
 
 </section>
 
