@@ -46,20 +46,6 @@ function trigger_custom_scripts() {
 
     wp_register_style('css_wordpress', get_template_directory_uri() . '/css/wordpress.css');
     wp_enqueue_style('css_wordpress');
-
-    /*SLICK SLIDER*/
-    wp_register_style('css_slick', get_template_directory_uri() . '/addon/slick/slick.css');
-    wp_enqueue_style('css_slick');
-
-    wp_register_style('css_slick_theme', get_template_directory_uri() . '/addon/slick/slick-theme.css');
-    wp_enqueue_style('css_slick_theme');
-
-    wp_register_script('jquery_slick', get_template_directory_uri() . '/addon/slick/slick.js', array('jquery'));
-    wp_enqueue_script('jquery_slick');
-
-    /*CUSTOM FONTS*/
-    wp_register_style('css_fonts', get_template_directory_uri() . '/fonts/stylesheet.css');
-    wp_enqueue_style('css_fonts');
 }
 
 
