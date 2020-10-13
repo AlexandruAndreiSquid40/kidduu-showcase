@@ -32,6 +32,7 @@ get_header();
     </section>
     <!-- END GLOBAL ANNOUNCEMENT -->
 
+<<<<<<< HEAD
     <!-- CARDS -->
     
 	<section class='content cards'>
@@ -523,6 +524,9 @@ get_header();
    
 
     
+=======
+    <h1>test 2</h1>
+>>>>>>> fb1e9289b45c60ad81a541df0b4c86365733993a
 
 </section>
 
