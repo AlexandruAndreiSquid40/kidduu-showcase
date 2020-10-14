@@ -56,7 +56,27 @@ jQuery(document).ready(function ($) {
         focusOnSelect:true,
         // fade: true,
         cssEase: 'linear',
-        rows: 0 // Fix vor v1.8.0-1 for not adding extra div
+        rows: 0, // Fix vor v1.8.0-1 for not adding extra div
+        prevArrow: "<a href='#' class='prevArrowCust'></a>",
+        nextArrow: "<a href='#' class='nextArrowCust'></a>"
+        
+    });
+    $('.prevArrowCust, .nextArrowCust').click(function(e){
+        e.preventDefault();
+    });
+    /*TWITTER FEED */
+    $('.feed_holder').slick({
+        // dots: true,
+        arrows: true,
+        infinite: false,
+        speed: 100,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        // fade: true,
+        cssEase: 'linear',
+        rows: 0, // Fix vor v1.8.0-1 for not adding extra div
+        prevArrow: "<a href='#' class='prevArrowCust'></a>",
+        nextArrow: "<a href='#' class='nextArrowCust'></a>"
         
     });
     // $('.content.events .events_slider .event_box.slick-active + .slick-active + .slick-active .event_box_pic').slideDown();
