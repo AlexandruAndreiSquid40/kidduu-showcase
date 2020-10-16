@@ -13,6 +13,17 @@ jQuery(document).ready(function ($) {
         $('.menu').slideToggle();
     });
 
+    $('.banner_slider').slick({
+        dots: false,
+        arrows: false,
+        infinite: true,
+        speed: 100,
+        slidesToShow: 1,
+        fade: true,
+        cssEase: 'linear',
+        rows: 0, 
+    });
+
 
     // for mobile Home Cards holder , clone card-image url and add the div parent background-image, and for mobile display block for that div[ no hover ]
     $('.cards_holder .card').each(function(){
@@ -85,6 +96,6 @@ jQuery(document).ready(function ($) {
 
     //     // $('.content.events .events_slider .event_box.slick-active + .slick-active + .slick-active .event_box_pic').slideDown();
     // });
-
+   
 
 });

@@ -30,7 +30,12 @@ if (function_exists('add_theme_support')) {
 }
 
 if (function_exists('add_image_size')) {
-    add_image_size('test', 960, 419, true);
+    // add_image_size('test', 960, 419, true);
+    add_image_size('pages_select', 327, 162, true);
+    add_image_size('latest_news_home', 443, 248, true);
+    add_image_size('events_home', 402, 200, true);
+    add_image_size('banner_home', 1920, 457, true);
+    add_image_size('banner_default', 1920, 457, true);
 }
 
 add_action('wp_enqueue_scripts', 'trigger_custom_scripts');
@@ -78,9 +83,12 @@ function cc_mime_types($mimes) {
 add_filter('upload_mimes', 'cc_mime_types');
 /* end image upload plroblem solver */
 
+ add_post_type_support( 'page', 'excerpt' );
+ add_post_type_support( 'events', 'excerpt' );
 
 
 // include_once 'cpt/test.php';
+include_once 'cpt/cpt_events.php';
 include 'helper/helper.php';
 include 'inc/breadcrumbs.php';
 include 'inc/widget-class.php';

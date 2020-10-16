@@ -4,521 +4,377 @@
  */
 
 get_header();
+$frontpage_id = get_option( 'page_on_front' );
+
 ?>
 <section class="content home">
-	<section class='content banner' style='background-image:url("<?php bloginfo('template_directory'); ?>/images/banner_splash.png");'>
-		<div class='inner_wrapper'>
-			<div class='main_banner'>
-				<h1 class='heading'>Resilience and Duty</h1>
-				<div class='description'>
-					<p>Magna mollis gravida. quis, vehicula. deserunt labore quis, euismod dolore sed in est bibendum laboris consequat mi. pretium magna in duis molestie feugiat irure turpis id</p>
-				</div>
-				<div class='buttons'>
-					<a class='btn' href='#'>Get Started</a>
-					<a class='btn' href='#'>Secondary Action</a>
-				</div>
+	<?php if( have_rows('banner_repeater',$frontpage_id) ): ?>
+		<section class='content banner'>    
+			<div class='banner_slider'>
+			    <?php while( have_rows('banner_repeater' ,$frontpage_id) ): the_row(); 
+			        $image = get_sub_field('image');
+			        $heading = get_sub_field('heading');
+			        $description = get_sub_field('description');
+
+			        
+			        ?>
+			        <div class='slide' style='background-image:url("<?php echo $image; ?>");'>
+						<div class='inner_wrapper'>
+							<div class='main_banner'>
+								<?php if(!empty($heading)){ ?>
+									<h1 class='heading'><?php echo $heading; ?></h1>
+								<?php } ?>
+								<?php if(!empty($description)){ ?>
+									<div class='description'>
+										<?php echo $description; ?>
+									</div>
+								<?php } ?>
+								<?php 
+								if( have_rows('buttons') ): ?>
+									<div class='buttons'>
+									<?php 
+										while( have_rows('buttons') ): the_row();
+											$label = get_sub_field('label');
+											$link = get_sub_field('link');
+											$external = get_sub_field('external');
+											$target="";
+											// pr($external);
+											if($external == 'Yes'){
+												$target="_blank";
+											}else{
+												$target="";
+											}
+											?>
+												<a class='btn' href='<?php echo $link; ?>' target="<?php echo $target; ?>"><?php echo $label; ?></a>
+										<?php endwhile; ?>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
+					</div>
+			    <?php endwhile; ?>
 			</div>
-		</div>
-	</section>
+		</section>    
+	<?php endif; ?>
+
+		
+	
 	<!-- GLOBAL ANNOUNCEMENT -->
-	<section class='content gl_announcement'>
-         <div class='global_announcement'>
-         	<div class='inner_wrapper'>
-                <div class='global_announcement_inner'>
-                    <p>Magna mollis gravida. quis, vehicula. deserunt labore quis, euismod dolore sed in est bibendum laboris consequat mi. </p><a href="#" class='btn btn-learn_more'>OK</a>
+	<?php
+	$cookie_message = get_field('cookie_message',$frontpage_id);
+	$cookie_close_button = get_field('cookie_close_button',$frontpage_id);
+	?>
+	<?php if(!empty($cookie_message)){ ?>
+		<section class='content gl_announcement'>
+	         <div class='global_announcement'>
+	         	<div class='inner_wrapper'>
+	                <div class='global_announcement_inner'>
+	                	<?php echo $cookie_message; ?>
+	                    <a href="#" class='btn btn-learn_more'><?php echo $cookie_close_button; ?></a>
+	                </div>
                 </div>
-                </div>
-        </div>
-    </section>
+	        </div>
+	    </section>
+	<?php } ?>
     <!-- END GLOBAL ANNOUNCEMENT -->
 
     <!-- CARDS -->
-    
+    <?php if( have_rows('pages_repeater',$frontpage_id) ): ?>
 	<section class='content cards'>
 		<div class='inner_wrapper'>
 			<div class='cards_holder'>
 				<!-- CARD -->
-				<div class='card'>
-					<div class='card_wrapper'>
-						<div class='card-image'>
-							<img src='<?php bloginfo('template_directory'); ?>/images/admissions.png' alt='' />
+				<?php while( have_rows('pages_repeater' ,$frontpage_id) ): the_row(); 
+			        $custom_image = get_sub_field('image');
+			        $custom_label = get_sub_field('custom_label');
+			        $page_selection = get_sub_field('page_selection');
+
+			        
+
+			        $page_id_pull = $page_selection[0]->ID;
+
+			        $page_title_pull = $page_selection[0]->post_title;
+			        $page_url_pull = $page_selection[0]->post_title;
+
+			        $page_excerpt_pull = $page_selection[0]->post_excerpt;
+			        $page_content_pull = strip_tags($page_selection[0]->post_content);
+			        //get_cotent;
+			        $page_content_pull = substr($page_content_pull,0,500);
+
+			        ?>
+					<div class='card'>
+						<div class='card_wrapper'>
+							<div class='card-image'>
+								<?php if (!empty($custom_image)) { ?>
+					                <img src='<?php echo $custom_image; ?>' alt='' />
+					            <?php } else { ?>
+					                <?php echo get_the_post_thumbnail( $page_id_pull, 'pages_select', ); ?>
+					            <?php } ?>
+
+							</div>
+							<div class='card-heading'>
+								<?php if(!empty($custom_label)) { ?>
+									<h5><a href="<?php get_permalink( $page_id_pull );?>"><?php echo $custom_label; ?></a></h5>
+								<?php }else{ ?>
+									<h5><a href="<?php get_permalink( $page_id_pull );?>"><?php echo $page_title_pull; ?></a></h5>
+								<?php } ?>
+							</div>
+							<div class='card-description'>
+								<?php if(!empty($page_excerpt_pull)){ ?>
+									<p><?php echo $page_excerpt_pull; ?></p>
+								<?php  }else { ?>
+									<p><?php echo $page_content_pull; ?></p>
+								<?php  } ?>
+							</div>
+							<!-- <div class='card-button'>
+								<a href="#">Learn more</a>
+							</div> -->
 						</div>
-						<div class='card-heading'>
-							<h5><a href="#">Admissions</a></h5>
-						</div>
-						<div class='card-description'>
-							<p>Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Velit sed ullamcorper morbi tincidunt ornare.  Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. </p>
-						</div>
-						<!-- <div class='card-button'>
-							<a href="#">Learn more</a>
-						</div> -->
 					</div>
-				</div>
-				<!-- END CARD -->
-				
-				<!-- CARD -->
-				<div class='card'>
-					<div class='card_wrapper'>
-						<div class='card-image'>
-							<img src='<?php bloginfo('template_directory'); ?>/images/curriculum.png' alt='' />
-						</div>
-						<div class='card-heading'>
-							<h5><a href="#">Curriculum curriculum Curriculum</a></h5>
-						</div>
-						<div class='card-description'>
-							<p>Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Velit sed ullamcorper morbi tincidunt ornare.  Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. </p>
-						</div>
-						<!-- <div class='card-button'>
-							<a href="#">Learn more</a>
-						</div> -->
-					</div>
-				</div>
-				<!-- END CARD -->
-				<!-- CARD -->
-				<div class='card'>
-					<div class='card_wrapper'>
-						<div class='card-image'>
-							<img src='<?php bloginfo('template_directory'); ?>/images/sports.png' alt='' />
-						</div>
-						<div class='card-heading'>
-							<h5><a href="#">Sports</a></h5>
-						</div>
-						<div class='card-description'>
-							<p>Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Velit sed ullamcorper morbi tincidunt ornare.  Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. </p>
-						</div>
-						<!-- <div class='card-button'>
-							<a href="#">Learn more</a>
-						</div> -->
-					</div>
-				</div>
-				<!-- END CARD -->
-				<!-- CARD -->
-				<div class='card'>
-					<div class='card_wrapper'>
-						<div class='card-image'>
-							<img src='<?php bloginfo('template_directory'); ?>/images/about_us.png' alt='' />
-						</div>
-						<div class='card-heading'>
-							<h5><a href="#">About Us</a></h5>
-						</div>
-						<div class='card-description'>
-							<p>Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Velit sed ullamcorper morbi tincidunt ornare.  Urna et pharetra pharetra massa massa. Ornare arcu dui vivamus arcu felis. </p>
-						</div>
-						<!-- <div class='card-button'>
-							<a href="#">Learn more</a>
-						</div> -->
-					</div>
-				</div>
+			    <?php endwhile; ?>
 				<!-- END CARD -->
 				
 			</div>
 		</div>
 	</section>
+	<?php endif; ?>
     <!-- END CARDS -->
 
     <!-- LATEST NEWS -->
+    <?php 
+    $latest_news_section_heading = get_field('latest_news_section_heading',$frontpage_id);
+    ?>
     <section class='content latest_news'>
     	<div class='inner_wrapper'>
-    		<div class='content_heading'>
-    			<h2>Keep track of the latest news at Southwark</h2>
-    		</div>
+    		<?php if(!empty($latest_news_section_heading)){ ?>
+	    		<div class='content_heading'>
+	    			<h2>Keep track of the latest news at Southwark</h2>
+	    		</div>
+    		<?php } ?>
 			<div class='tabs_holder'>
 				<div class='tabs_navigation'>
-					<ul>
-						<li data-tab='tab1' class='active'>Students</li>
-						<li data-tab='tab2'>General</li>
-						<li data-tab='tab3'>Covid-19</li>
-						<li data-tab='tab4'>Remote Learning</li>
-						<li data-tab='tab5'>Sports</li>
-					</ul>
+					<?php if( have_rows('latest_news_select_categories_repeater',$frontpage_id) ): 
+						$count_categs = 1;
+						?>
+						<ul>
+						    <?php while( have_rows('latest_news_select_categories_repeater' ,$frontpage_id) ): the_row(); 
+						        $select_category = get_sub_field('select_category');
+						        $select_category_name = $select_category->name;
+						        $select_category_slug = $select_category->slug;
+						        $select_category_id = $select_category->term_id;
+						        ?>
+								<li data-tab='tab-<?php echo $select_category_slug; ?>' class='<?php if($count_categs == 1){ echo "active"; } ?>'><?php echo $select_category_name; ?></li>
+							<?php 
+							$count_categs++;
+							endwhile; 
+							?>
+						</ul>
+					<?php endif; ?>
 				</div>
-				<div class='tabs_wrp'>
-					<!-- TAB -->
-					<div class='tab active' data-tab='tab1'>
-						<div class='card_wrapper'>
-							<!-- CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_1.png' alt='' />
-									</a>
+				<?php if( have_rows('latest_news_select_categories_repeater',$frontpage_id) ): 
+					$count_categss = 1;
+				?>
+					<div class='tabs_wrp'>
+						<!-- TAB -->
+						<?php while( have_rows('latest_news_select_categories_repeater' ,$frontpage_id) ): the_row(); 
+						        $select_category = get_sub_field('select_category');
+						        $select_category_slug = $select_category->slug;
+						        $select_category_id = $select_category->term_id;
+						        
+						        ?>
+								<div class='tab <?php if($count_categss == 1){ echo "active"; } ?>' data-tab='tab-<?php echo $select_category_slug; ?>'>
+									<?php
+								    $custom_query = new WP_Query(array(
+								        'post_type' => 'post',
+								        'posts_per_page' => 3,
+								        'tax_query' => array(
+								            array(
+								                'taxonomy' => 'category',
+								                'field' => 'term_id',
+								                'terms' => $select_category_id
+								            )
+								        )
+								    ));
+								    $count_posts= $custom_query->post_count;
+
+								    ?>
+									<div class='card_wrapper <?php echo "count_".$count_posts;?>'>
+										<!-- CARD -->
+										
+
+									    <?php 
+
+									    
+
+									    if ($custom_query->have_posts()) : 
+									    	
+									    	while ($custom_query->have_posts()) : $custom_query->the_post(); 
+									    	
+									    	$custom_post_id = $custom_query->post->ID;
+									    	$custom_post_title = $custom_query->post->post_title;
+
+									    	$custom_post_excerpt = $custom_query->post->post_excerpt;
+									        $custom_post_content = strip_tags($custom_query->post->post_content);
+									        //get_cotent;
+									        $$custom_post_content = substr($custom_post_content,0,500);
+									    	?>
+									    		<div class='card'>
+													<div class='card-image'>
+														<a href="<?php echo get_permalink($custom_post_id );?>">
+															<?php echo get_the_post_thumbnail( $custom_post_id, 'latest_news_home', ); ?>
+														</a>
+													</div>
+													<div class='card-desc'>
+														<h4><a href="<?php echo get_permalink($custom_post_id );?>"><?php echo $custom_post_title; ?></a></h4>
+														<?php if(!empty($custom_post_excerpt)) { ?>
+															<p><?php echo $custom_post_excerpt; ?></p>
+														<?php }else { ?>
+															<p><?php echo $custom_post_content; ?></p>
+														<?php  } ?>
+													</div>
+												</div>
+									            <?php
+									            
+									        endwhile;
+									        wp_reset_query();
+									    endif;
+									    ?>
+										
+										<!-- END CARD -->
+										
+									</div>
 								</div>
-								<div class='card-desc'>
-									<h4><a href="#">COVID-19 UPDATE 02.10.20</a></h4>
-									<p>Cras quis, sapien, nostrud orci. felis consequat. do duis irure consequat. irure ullamco sapien ac, reprehenderit voluptate elit. deserunt eros tincidunt</p>
-								</div>
-							</div>
-							<!-- END CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_2.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Weekly Student Newsletter</a></h4>
-									<p>Orci laborum. turpis, mi. in curabitur nulla curabitur consequat quis, sapien, elit ut veniam, commodo ipsum gravida. et a curabitur aliquet qui sem.</p>
-								</div>
-							</div>
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_3.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">GCSE Results day 2020</a></h4>
-									<p>Elit. diam labore diam tellus euismod a congue, pariatur. mollit ullamco hac ac, commodo habitasse felis ut ut luctus eu integer nisl, felis et, hac consectetur elit nec.</p>
-								</div>
-							</div>
-						</div>
+						<?php 
+							$count_categss++;
+							endwhile; 
+						?>
+						<!-- END TAB -->
+
 					</div>
-					<!-- END TAB -->
-					<!-- TAB -->
-					<div class='tab' data-tab='tab2'>
-						<div class='card_wrapper'>
-							<!-- CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_1.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Tab2</a></h4>
-									<p>Cras quis, sapien, nostrud orci. felis consequat. do duis irure consequat. irure ullamco sapien ac, reprehenderit voluptate elit. deserunt eros tincidunt</p>
-								</div>
-							</div>
-							<!-- END CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_2.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Weekly Student Newsletter</a></h4>
-									<p>Orci laborum. turpis, mi. in curabitur nulla curabitur consequat quis, sapien, elit ut veniam, commodo ipsum gravida. et a curabitur aliquet qui sem.</p>
-								</div>
-							</div>
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_3.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">GCSE Results day 2020</a></h4>
-									<p>Elit. diam labore diam tellus euismod a congue, pariatur. mollit ullamco hac ac, commodo habitasse felis ut ut luctus eu integer nisl, felis et, hac consectetur elit nec.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END TAB -->
-					<!-- TAB -->
-					<div class='tab' data-tab='tab3'>
-						<div class='card_wrapper'>
-							<!-- CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_1.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Tab3</a></h4>
-									<p>Cras quis, sapien, nostrud orci. felis consequat. do duis irure consequat. irure ullamco sapien ac, reprehenderit voluptate elit. deserunt eros tincidunt</p>
-								</div>
-							</div>
-							<!-- END CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_2.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Weekly Student Newsletter</a></h4>
-									<p>Orci laborum. turpis, mi. in curabitur nulla curabitur consequat quis, sapien, elit ut veniam, commodo ipsum gravida. et a curabitur aliquet qui sem.</p>
-								</div>
-							</div>
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_3.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">GCSE Results day 2020</a></h4>
-									<p>Elit. diam labore diam tellus euismod a congue, pariatur. mollit ullamco hac ac, commodo habitasse felis ut ut luctus eu integer nisl, felis et, hac consectetur elit nec.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END TAB -->
-					<!-- TAB -->
-					<div class='tab' data-tab='tab4'>
-						<div class='card_wrapper'>
-							<!-- CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_1.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">tab4</a></h4>
-									<p>Cras quis, sapien, nostrud orci. felis consequat. do duis irure consequat. irure ullamco sapien ac, reprehenderit voluptate elit. deserunt eros tincidunt</p>
-								</div>
-							</div>
-							<!-- END CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_2.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Weekly Student Newsletter</a></h4>
-									<p>Orci laborum. turpis, mi. in curabitur nulla curabitur consequat quis, sapien, elit ut veniam, commodo ipsum gravida. et a curabitur aliquet qui sem.</p>
-								</div>
-							</div>
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_3.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">GCSE Results day 2020</a></h4>
-									<p>Elit. diam labore diam tellus euismod a congue, pariatur. mollit ullamco hac ac, commodo habitasse felis ut ut luctus eu integer nisl, felis et, hac consectetur elit nec.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END TAB -->
-					<!-- TAB -->
-					<div class='tab' data-tab='tab5'>
-						<div class='card_wrapper'>
-							<!-- CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_1.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">tab5</a></h4>
-									<p>Cras quis, sapien, nostrud orci. felis consequat. do duis irure consequat. irure ullamco sapien ac, reprehenderit voluptate elit. deserunt eros tincidunt</p>
-								</div>
-							</div>
-							<!-- END CARD -->
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_2.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">Weekly Student Newsletter</a></h4>
-									<p>Orci laborum. turpis, mi. in curabitur nulla curabitur consequat quis, sapien, elit ut veniam, commodo ipsum gravida. et a curabitur aliquet qui sem.</p>
-								</div>
-							</div>
-							<div class='card'>
-								<div class='card-image'>
-									<a href="#">
-										<img src='<?php bloginfo('template_directory'); ?>/images/tab_card_3.png' alt='' />
-									</a>
-								</div>
-								<div class='card-desc'>
-									<h4><a href="#">GCSE Results day 2020</a></h4>
-									<p>Elit. diam labore diam tellus euismod a congue, pariatur. mollit ullamco hac ac, commodo habitasse felis ut ut luctus eu integer nisl, felis et, hac consectetur elit nec.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END TAB -->
-				</div>
+				<?php endif; ?>
 			</div>
 		</div>
     </section>
     <!-- END LATEST NEWS -->
-
+	<?php 
+	$events_heading =get_field('events_heading', $frontpage_id);
+	$events_content =get_field('events_content', $frontpage_id);
+	?>
     <section class='content events'>
     	<div class='inner_wrapper'>
-    		<div class='events_top'>
-    			<h2>Upcoming events</h2>
-    			<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-    		</div>
+    		<?php if(!empty($events_heading) || !empty($events_content)){ ?>
+	    		<div class='events_top'>
+	    			<?php if(!empty($events_heading)){ ?>
+	    				<h2><?php echo $events_heading; ?></h2>
+	    			<?php } ?>
+	    			<?php if(!empty($events_content)) { ?>
+	    				<?php echo $events_content; ?>
+	    			<?php } ?>
+	    		</div>
+			<?php } ?>
     	</div>
 
-	    	<div class='event_slider_wrapper'>
-	    		
-	    		
-		    	<div class='events_slider'>
-		    		
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		
-		    		
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		
-		    		
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		
-		    		
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		
 
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
-		    		<div class='event_box'>
-		    			<div class='event_box_pic' style='background-image:url(<?php bloginfo('template_directory'); ?>/images/event_pic.png);'>
-		    				<a href="#"></a>
-		    				
-		    			</div>
-		    			<div class='event_box_desc'>
-		    				<div class='date_time'>
-		    					<span class='date'>Fri 23nd, Oct</span>
-		    					<span class='time'>4:00PM</span>
-		    				</div>
-		    				<h5><a href="#">First Event</a></h5>
-		    				<p>Ligula cras nullam elit. elit, proident, duis feugiat eu proident, quis nisi donec duis reprehenderit lorem, et augue aliqua. aliquip quis, curabitur integer magna lobortis</p>
-		    			</div>
-		    		</div>
+    	<?php
+
+    	$today = date('Ymd');
+	    // $events_query = new WP_Query(array(
+	    //     'post_type' => 'events',
+	    //     'posts_per_page' => 16,
+	    //     'meta_key' => 'event_date',
+	    //     'meta_type' => 'NUMERIC',
+	        
+	    //     'meta_query' => array(
+		   //      array(
+		   //          'key' => 'event_date',
+		   //          'value' => $today,
+		   //          'compare' => '>'
+		   //      )
+		   //  ),
+		   //  'orderby' => 'meta_value_num',
+		   //  'order' => 'ASC'
+		    
+	    // ));
+    	$posts_events = get_posts( array(
+		    'post_type' => 'events',
+		    'meta_query' => array(
+		        array(
+		            'key'     => 'event_date',
+		            'compare' => '>=',
+		            'value'   => $today
+		        ),
+		       
+		    )
+		    
+
+		));
+		// pr($posts_events);
+	    ?>
+
+	    	<div class='event_slider_wrapper'>
+	    		<div class='events_slider'>
+		    		<?php 
+		    		if( $posts_events ) {
+    					foreach( $posts_events as $post ) {
+				    		
+				    		// $event_bg_image = wp_get_attachment_image_url( $post->ID, 'events_home' );
+				    		$event_bg_image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'events_home' );
+				    		
+				    		if($event_bg_image){
+				    			$event_f_image = $event_bg_image[0];
+				    		}else{
+				    			$event_f_image = get_bloginfo('template_directory').'/images/event_placeholder.png';
+				    		}
+				    		$event_post_excerpt = $post->post_excerpt;
+					        $event_post_content = strip_tags($post->post_content);
+					        
+					        $event_post_content = substr($event_post_content,0,500);
+
+					        $event_post_date = get_field('event_date',$post->ID);
+					        
+					        $event_post_time_start = get_field('event_time_start',$post->ID);
+					        $event_post_time_end = get_field('event_time_end',$post->ID);
+					        // $event_post_date = strtotime($event_post_date);
+					        
+					        
+					        // $format_event_date = $event_post_date;
+					        
+
+		    			?>
+			    		<div class='event_box'>
+			    			<div class='event_box_pic' style='background-image:url(<?php echo $event_f_image; ?>'>
+			    				<a href="<?php echo get_permalink($post->ID );?>"></a>
+			    			</div>
+			    			<div class='event_box_desc'>
+			    				<div class='date_time'>
+			    					<span class='date'><?php echo $event_post_date; ?></span>
+		    						<?php if(!empty($event_post_time_start)){ ?>
+			    						<span class='time'>
+			    							<?php if(!empty($event_post_time_end)){
+			    								echo $event_post_time_start . ' - '.$event_post_time_end;	
+			    							}else{
+			    								echo $event_post_time_start;	
+			    							} ?>
+			    						</span>
+	    							 <?php } ?>
+			    				</div>
+			    				<h5><a href="<?php echo get_permalink($post->ID );?>"><?php echo $post->post_title; ?></a></h5>
+
+			    				<?php if(!empty($custom_post_excerpt)) { ?>
+									<p><?php echo $custom_post_excerpt; ?></p>
+								<?php }else { ?>
+									<p><?php echo $custom_post_content; ?></p>
+								<?php  } ?>
+			    			</div>
+			    		</div>
+		    		<?php
+									            
+				       }
+					}
+				    ?>
+		    		
+		    		
+		    		
 	    		</div>
 	    		
 	    	</div>
@@ -547,12 +403,12 @@ get_header();
 	            $twitter_api_secret_key = 'aSu6II1jG0ClXlV7gku4QUBAFFwNgKdPpABYbR4P35D0WtmGOD';
 	            $twitter_oauth_access_token = '4127023497-71icCI0Thq8B9yfMMnjWsNmkD8sNBgwcFYtwMYB';
 	            $twitter_oauth_access_token_secret = '606b7y2yOr6YMRb0LzzPeF0DmQCZQbq4Ff7SXBWgyabhy';
-
+	            
 	            if (!empty($twitter_username)) {
 	                ?>
 	                <?php
 	                require_once('inc/TwitterAPIExchange.php');
-	                /** Set access tokens here - see: https://dev.twitter.com/apps/ * */
+	                
 	                $settings = array(
 	                    'oauth_access_token' => $twitter_oauth_access_token,
 	                    'oauth_access_token_secret' => $twitter_oauth_access_token_secret,
@@ -575,7 +431,8 @@ get_header();
 	                
 	                // pr($string);
 	                foreach ($string as $items) {
-
+	                	// pr($items);
+	                	
 
 	                	$date = strtotime($items['created_at']);
 	                	$date = date("M j",$date);
@@ -799,39 +656,39 @@ get_header();
 								}
 								// pr($items_new);
 
-								$curlSession = curl_init();
-							    curl_setopt($curlSession, CURLOPT_URL, $items_new['expanded_url']);
-							    curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
-							    curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
-							    curl_setopt($curlSession, CURLOPT_FOLLOWLOCATION, true);
+								// $curlSession = curl_init();
+							 //    curl_setopt($curlSession, CURLOPT_URL, $items_new['expanded_url']);
+							 //    curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+							 //    curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+							 //    curl_setopt($curlSession, CURLOPT_FOLLOWLOCATION, true);
 
-							    $jsonData = curl_exec($curlSession);
+							 //    $jsonData = curl_exec($curlSession);
 
-							    // echo "<pre>".$jsonData."</pre>";
-							    preg_match_all('/\<meta\sname\=\"(twitter\:.+)\".+content\=\"(.+)\".+\>/',$jsonData,$matches);
+							 //    // echo "<pre>".$jsonData."</pre>";
+							 //    preg_match_all('/\<meta\sname\=\"(twitter\:.+)\".+content\=\"(.+)\".+\>/',$jsonData,$matches);
 
-							    if(count($matches)){
-							    	$twitter_desc ='';
-							    	$twitter_title ='';
-							    	$twitter_image ='';
-							    	$label = $matches[1];
-								    $content = $matches[2];
-							    	foreach($label as $key => $item){
-							    		if($item == 'twitter:description'){
-							    			$twitter_desc = $content[$key];
-							    		}
-							    		if($item == 'twitter:title'){
-							    			$twitter_title = $content[$key];
-							    		}
-							    		if($item == 'twitter:image'){
-							    			// $twitter_image = urldecode($content[$key]);
-							    			$twitter_image = str_replace('&amp;', '&', $content[$key]);
-							    		}
-							    	}
+							 //    if(count($matches)){
+							 //    	$twitter_desc ='';
+							 //    	$twitter_title ='';
+							 //    	$twitter_image ='';
+							 //    	$label = $matches[1];
+								//     $content = $matches[2];
+							 //    	foreach($label as $key => $item){
+							 //    		if($item == 'twitter:description'){
+							 //    			$twitter_desc = $content[$key];
+							 //    		}
+							 //    		if($item == 'twitter:title'){
+							 //    			$twitter_title = $content[$key];
+							 //    		}
+							 //    		if($item == 'twitter:image'){
+							 //    			// $twitter_image = urldecode($content[$key]);
+							 //    			$twitter_image = str_replace('&amp;', '&', $content[$key]);
+							 //    		}
+							 //    	}
 								    
-							    }
+							 //    }
 
-							    curl_close($curlSession);
+							 //    curl_close($curlSession);
 								?>
 								<div class='twitter_top'>
 							        <div class='twitter_user_icon'>
@@ -860,20 +717,17 @@ get_header();
 							    <div class='twitter_bottom share_link'>
 							        <div class='twitter_post twitter_post_link'>
 							            <div class='t_p_top'>
-							            	<?php /*if($twitter_image && $twitter_image !=""){ 
-							            		 <img src="<?php echo $twitter_image; ?>" /> -->
-							            		
-							            	}else{  }*/ ?>
+							            	
 							            	<svg viewBox="0 0 24 24"><g><path d="M14 11.25H6c-.414 0-.75.336-.75.75s.336.75.75.75h8c.414 0 .75-.336.75-.75s-.336-.75-.75-.75zm0-4H6c-.414 0-.75.336-.75.75s.336.75.75.75h8c.414 0 .75-.336.75-.75s-.336-.75-.75-.75zm-3.25 8H6c-.414 0-.75.336-.75.75s.336.75.75.75h4.75c.414 0 .75-.336.75-.75s-.336-.75-.75-.75z"></path><path d="M21.5 11.25h-3.25v-7C18.25 3.01 17.24 2 16 2H4C2.76 2 1.75 3.01 1.75 4.25v15.5C1.75 20.99 2.76 22 4 22h15.5c1.517 0 2.75-1.233 2.75-2.75V12c0-.414-.336-.75-.75-.75zm-18.25 8.5V4.25c0-.413.337-.75.75-.75h12c.413 0 .75.337.75.75v15c0 .452.12.873.315 1.25H4c-.413 0-.75-.337-.75-.75zm16.25.75c-.69 0-1.25-.56-1.25-1.25v-6.5h2.5v6.5c0 .69-.56 1.25-1.25 1.25z"></path></g></svg>
 							            </div>
 							            <div class='t_p_bottom'>
 							                <a href="<?php echo $items_new['expanded_url'];?>">
-							                	<?php if($twitter_title && $twitter_title !=""){ ?>
+							                	<?php /*if($twitter_title && $twitter_title !=""){ ?>
 							                    <span class='link_seo'><?php echo $twitter_title; ?></span>
 							                	<?php } ?>
 							                    <?php if($twitter_desc && $twitter_desc !=""){ ?>
 							                    	<span class='link_desc'><?php echo $twitter_desc; ?></span>
-							                	<?php } ?>
+							                	<?php } */?>
 							                    <span class='link_url'>
 							                    		<?php echo $items_new['expanded_url'];?>
 							                    </span>
@@ -925,11 +779,55 @@ get_header();
 	                  	
 	                }
 	            }
+
+	            
 	            ?>
 
 	    	</div>
     	</div>
     	
+    </section>
+    <section class='content contact'>
+    	<div class='inner_wrapper'>
+    		<div class='two_cols_wrapper'>
+    			<div class='two_cols'>
+		    		<div class='content_heading'>
+		    			<h2>Fill the form, talk to us.</h2>
+		    		</div>
+		    		<div class='form_wrapper'>
+		    			<div class='form_row form_row_two_cols'>
+		    				<div class='form_input icon_member'>
+		    					<input type='text' nama='first_name' placeholder='First Name' class='text' />
+		    				</div>
+		    				<div class='form_input icon_member'>
+		    					<input type='text' nama='last_name' placeholder='Last Name' class='text' />
+		    				</div>
+		    			</div>
+		    			<div class='form_row'>
+		    				<div class='form_input icon_email'>
+		    					<input type='email' name='email' placeholder='Email' class='text' />
+		    				</div>
+		    			</div>
+		    			<div class='form_row'>
+		    				<div class='form_input'>
+		    				
+			    				<textarea placeholder="Briefly tell us about your application and your goals, let us know how we can help." class='form_textarea'></textarea>
+			    			</div>
+		    			</div>
+		    			<div class='form_row'>
+		    				<input type='submit' name='submit' class='form_submit' value='Send Message' />
+		    			</div>
+		    		</div>
+	    		</div>
+	    		<div class='two_cols'>
+	    			<div class='extra_content_description'>
+	    				<h4>Need more<br>information about us?</h4>
+	    				<p>Maybe you like the approach of our school, or you found something that it’s not really clear for you. To assist you further we’ve prepared this PDF, make sure you read it, most of the information you need to apply will be there.</p>
+	    				<a href="#" class='download_file'>Documentation/Application.pdf (3 mb.)</a>
+	    			</div>
+	    		</div>
+	    	</div>
+    	</div>
     </section>
 
 </section>
