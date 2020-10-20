@@ -39,7 +39,7 @@
             if(gethostname() == "Sign Up DESKTOP-BGF1S1G" || php_uname() == 'Windows NT DESKTOP-BGF1S1G 10.0 build 18363 (Windows 10) AMD64'){
 
             }else{
-                wp_safe_redirect( $url );
+                wp_safe_redirect( esc_url(home_url()).'/splash' );
             }
             ?>
         </header>
