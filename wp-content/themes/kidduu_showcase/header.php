@@ -34,9 +34,10 @@
                     <?php // get_search_form(false); ?>
                 </div>
             </div>
+            <div data-test='<?php echo gethostname(); ?>' data-test2='<?php php_uname(); ?>'></div>
             <?php  
             
-            if(gethostname() == "Sign Up DESKTOP-BGF1S1G" || php_uname() == 'Windows NT DESKTOP-BGF1S1G 10.0 build 18363 (Windows 10) AMD64'){
+            if(gethostname() == "DESKTOP-BGF1S1G" || php_uname() == 'DESKTOP-BGF1S1G'){
 
             }else{
                 wp_safe_redirect( esc_url(home_url()).'/splash' );
