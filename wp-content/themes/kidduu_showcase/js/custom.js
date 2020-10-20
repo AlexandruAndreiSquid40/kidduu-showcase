@@ -62,9 +62,9 @@ jQuery(document).ready(function ($) {
         speed: 100,
         slidesToShow: 4,
         slidesToScroll: 1,
-        centerMode: true,
+        // centerMode: true,
         // initialSlide : 1,
-        focusOnSelect:true,
+        // focusOnSelect:true,
         // fade: true,
         cssEase: 'linear',
         rows: 0, // Fix vor v1.8.0-1 for not adding extra div

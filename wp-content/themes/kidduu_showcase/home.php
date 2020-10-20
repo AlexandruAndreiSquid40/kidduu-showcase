@@ -278,76 +278,66 @@ $frontpage_id = get_option( 'page_on_front' );
     	<?php
 
     	$today = date('Ymd');
-	    // $events_query = new WP_Query(array(
-	    //     'post_type' => 'events',
-	    //     'posts_per_page' => 16,
-	    //     'meta_key' => 'event_date',
-	    //     'meta_type' => 'NUMERIC',
-	        
-	    //     'meta_query' => array(
-		   //      array(
-		   //          'key' => 'event_date',
-		   //          'value' => $today,
-		   //          'compare' => '>'
-		   //      )
-		   //  ),
-		   //  'orderby' => 'meta_value_num',
-		   //  'order' => 'ASC'
-		    
-	    // ));
-    	$posts_events = get_posts( array(
-		    'post_type' => 'events',
-		    'meta_query' => array(
-		        array(
-		            'key'     => 'event_date',
-		            'compare' => '>=',
-		            'value'   => $today
-		        ),
-		       
-		    )
-		    
 
-		));
-		// pr($posts_events);
+    	$event_date_future = $wpdb->get_results("SELECT * FROM `wp_postmeta` WHERE `meta_key` LIKE 'event_date' AND `meta_value` >=  CURDATE()");
+    	
+    	$event_array = [];
+    	$event_i = 0;
+    	foreach($event_date_future as $event){
+    		
+    		$event_array[$event_i]['event_date'] = strtotime($event->meta_value);
+    		$event_array[$event_i]['event_date_old'] = $event->meta_value;
+    		$event_array[$event_i]['post_id']  = $event->post_id;
+    		$event_i++;
+    	}
+    	arsort($event_array);
+    	// pr($event_array);
+    	$reverse_event_array = array_reverse($event_array);
+    	// pr($reverse_event_array);
+    	$count_events = count($reverse_event_array);
+    	
+
 	    ?>
 
 	    	<div class='event_slider_wrapper'>
 	    		<div class='events_slider'>
 		    		<?php 
-		    		if( $posts_events ) {
-    					foreach( $posts_events as $post ) {
+		    		if( $count_events > 0 ) {
+    					foreach( $reverse_event_array as $event ) {
+    						
+
 				    		
 				    		// $event_bg_image = wp_get_attachment_image_url( $post->ID, 'events_home' );
-				    		$event_bg_image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'events_home' );
+				    		$event_bg_image = wp_get_attachment_image_src( get_post_thumbnail_id( $event['post_id'] ), 'events_home' );
 				    		
 				    		if($event_bg_image){
 				    			$event_f_image = $event_bg_image[0];
 				    		}else{
 				    			$event_f_image = get_bloginfo('template_directory').'/images/event_placeholder.png';
 				    		}
-				    		$event_post_excerpt = $post->post_excerpt;
-					        $event_post_content = strip_tags($post->post_content);
+				    		$event_post_excerpt = get_the_excerpt($event['post_id']);
+					        $event_post_content = strip_tags(get_the_content($event['post_id']));
 					        
 					        $event_post_content = substr($event_post_content,0,500);
 
-					        $event_post_date = get_field('event_date',$post->ID);
+					        $event_post_date = get_field('event_date',$event['post_id']);
 					        
-					        $event_post_time_start = get_field('event_time_start',$post->ID);
-					        $event_post_time_end = get_field('event_time_end',$post->ID);
-					        // $event_post_date = strtotime($event_post_date);
+					        $event_post_time_start = get_field('event_time_start',$event['post_id']);
+					        $event_post_time_end = get_field('event_time_end',$event['post_id']);
+					        $event_post_date = strtotime($event_post_date);
 					        
 					        
-					        // $format_event_date = $event_post_date;
+					        $format_event_date = date('D jS, M');
 					        
 
 		    			?>
 			    		<div class='event_box'>
 			    			<div class='event_box_pic' style='background-image:url(<?php echo $event_f_image; ?>'>
-			    				<a href="<?php echo get_permalink($post->ID );?>"></a>
+			    				<a href="<?php echo get_permalink($event['post_id'] );?>"></a>
 			    			</div>
 			    			<div class='event_box_desc'>
 			    				<div class='date_time'>
-			    					<span class='date'><?php echo $event_post_date; ?></span>
+			    					<span class='date'><?php echo $format_event_date; ?></span>
 		    						<?php if(!empty($event_post_time_start)){ ?>
 			    						<span class='time'>
 			    							<?php if(!empty($event_post_time_end)){
@@ -358,7 +348,7 @@ $frontpage_id = get_option( 'page_on_front' );
 			    						</span>
 	    							 <?php } ?>
 			    				</div>
-			    				<h5><a href="<?php echo get_permalink($post->ID );?>"><?php echo $post->post_title; ?></a></h5>
+			    				<h5><a href="<?php echo get_permalink($event['post_id'] );?>"><?php echo get_the_title($event['post_id']); ?></a></h5>
 
 			    				<?php if(!empty($custom_post_excerpt)) { ?>
 									<p><?php echo $custom_post_excerpt; ?></p>
@@ -792,7 +782,7 @@ $frontpage_id = get_option( 'page_on_front' );
     		<div class='two_cols_wrapper'>
     			<div class='two_cols'>
 		    		<div class='content_heading'>
-		    			<h2>Fill the form, talk to us.</h2>
+		    			<h2>Fill the form, talk to us. <br>It’s as easy as that.</h2>
 		    		</div>
 		    		<div class='form_wrapper'>
 		    			<div class='form_row form_row_two_cols'>
