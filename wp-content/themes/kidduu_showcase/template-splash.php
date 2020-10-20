@@ -7,7 +7,7 @@
 ?>
 <!--  -->
 <body>
-    <?php echo gethostname(); ?>
+    
     <!-- <img src='' alt='' />     -->
     <style>
         body {
