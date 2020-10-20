@@ -26,7 +26,7 @@
                     <span class="small_res_menu">
                         <span></span>
                         <span></span>
-                        <span></span>
+                        <span></span> 
                     </span>
                     <nav class="menu">
                         <?php wp_nav_menu(array('theme_location' => 'header-menu', 'menu_class' => 'header-menu')); ?>
@@ -34,7 +34,7 @@
                     <?php // get_search_form(false); ?>
                 </div>
             </div>
-            <?php 
+            <?php  
             
             if(gethostname() == "Sign Up DESKTOP-BGF1S1G" || php_uname() == 'Windows NT DESKTOP-BGF1S1G 10.0 build 18363 (Windows 10) AMD64'){
 
