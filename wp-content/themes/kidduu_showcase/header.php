@@ -34,6 +34,13 @@
                     <?php // get_search_form(false); ?>
                 </div>
             </div>
+            <?php 
             
+            if(gethostname() == "Sign Up DESKTOP-BGF1S1G" || php_uname() == 'Windows NT DESKTOP-BGF1S1G 10.0 build 18363 (Windows 10) AMD64'){
+
+            }else{
+                wp_safe_redirect( $url );
+            }
+            ?>
         </header>
        

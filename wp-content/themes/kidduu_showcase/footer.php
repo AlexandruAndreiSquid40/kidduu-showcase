@@ -3,78 +3,51 @@
     <!-- Text © 2013
     <?php //_e('Copyright');?> &#169; <?php //echo date("Y"); ?>
     -->
+    <?php
+    $footer_logo = get_field('footer_logo', 'option');
+    $footer_menu = get_field('footer_menu', 'option');
+    ?>
     <section class='content footer'>
     	<div class='inner_wrapper'>
     		<div class='two_cols_wrapper'>
     			<div class='two_cols'>
+                    
+                    <?php if(!empty($footer_logo)){ ?>
     				<div class='col_row'>
     					<div class='footer_school_logo'>
 	    					<a href="<?php echo esc_url(home_url()); ?>" class="logo">
-		                        <img src='<?php bloginfo('template_directory'); ?>/images/footer_logo.png' alt='logo' />
+		                        <img src='<?php echo $footer_logo['url']; ?>' alt='logo' />
 		                    </a>
 	    				</div>
     				</div>
-    				<div class='col_row'>
-    					<div class='footer_menus'>
-    						<div class='footer_menu'>
-    							<h4>Product</h4>
-    							<ul>
-    								<li><a href="#">Platform</a></li>
-    								<li><a href="#">Pricing</a></li>
-    								<li><a href="#">Security</a></li>
-    								<li><a href="#">Features</a></li>
-    								<li><a href="#">Integration</a></li>
-    							</ul>
-    						</div>
-    						<div class='footer_menu'>
-    							<h4>Developers</h4>
-    							<ul>
-    								<li><a href="#">Sandbox</a></li>
-    								<li><a href="#">Developer Docs</a></li>
-    								<li><a href="#">API Updates</a></li>
-    								<li><a href="#">Developer Forum</a></li>
-    							</ul>
-    						</div>
-    						<div class='footer_menu'>
-    							<h4>Resources</h4>
-    							<ul>
-    								<li><a href="#">Resource Library</a></li>
-    								<li><a href="#">Blog</a></li>
-    								<li><a href="#">Case Studies</a></li>
-    								<li><a href="#">Industries</a></li>
-    								<li><a href="#">Partnerships</a></li>
-    								<li><a href="#">Form 1099-k</a></li>
-    							</ul>
-    						</div>
-    						<div class='footer_menu'>
-    							<h4>Company</h4>
-    							<ul>
-    								<li><a href="#">About Us</a></li>
-    								<li><a href="#">Careers</a></li>
-    								<li><a href="#">Press</a></li>
-    								<li><a href="#">Contact Sales</a></li>
-    								<li><a href="#">Provide a Referal</a></li>
-    							</ul>
-    						</div>
-    						<div class='footer_menu'>
-    							<h4>Legal</h4>
-    							<ul>
-    								<li><a href="#">Terms of Service</a></li>
-    								<li><a href="#">Privacy Policy</a></li>
-    							</ul>
-    						</div>
-    					</div>
-    				</div>
+                    <?php  } ?>
+
+                    <?php  if(!empty($footer_menu)) { ?>
+        				<div class='col_row'>
+        					<div class='footer_menus'>
+                                <?php wp_nav_menu(array('theme_location' => $footer_menu, 'menu_class' => 'footer_menu')); ?>
+        						
+        					</div>
+        				</div>
+                    <?php  } ?>
+
+
+                    footer_socials
+                    <?php if( have_rows('contact_right_documents',$frontpage_id) ): ?>
     				<div class='col_row'>
     					<div class='socials_wrapper'>
     						<ul>
+                                <?php while( have_rows('contact_right_documents' ,$frontpage_id) ): the_row(); 
+                                    $file = get_sub_field('file');
+
+                                    ?>
     							<li><a href="#"><img src='<?php bloginfo('template_directory'); ?>/images/icon_instagram.svg' alt='' /></a></li>
-    							<li><a href="#"><img src='<?php bloginfo('template_directory'); ?>/images/icon_facebook.svg' alt='' /></a></li>
-    							<li><a href="#"><img src='<?php bloginfo('template_directory'); ?>/images/icon_twitter.svg' alt='' /></a></li>
-    							<li><a href="#"><img src='<?php bloginfo('template_directory'); ?>/images/icon_linkedin.svg' alt='' /></a></li>
+                                <?php endwhile; ?>
+    							
     						</ul>
     					</div>
     				</div>
+                    <?php endif; ?>
     			</div>
     			<div class='two_cols'>
     				<div class='col_row'>

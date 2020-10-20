@@ -777,49 +777,46 @@ $frontpage_id = get_option( 'page_on_front' );
     	</div>
     	
     </section>
-    <section class='content contact'>
-    	<div class='inner_wrapper'>
-    		<div class='two_cols_wrapper'>
-    			<div class='two_cols'>
-		    		<div class='content_heading'>
-		    			<h2>Fill the form, talk to us. <br>It’s as easy as that.</h2>
-		    		</div>
-		    		<div class='form_wrapper'>
-		    			<div class='form_row form_row_two_cols'>
-		    				<div class='form_input icon_member'>
-		    					<input type='text' nama='first_name' placeholder='First Name' class='text' />
-		    				</div>
-		    				<div class='form_input icon_member'>
-		    					<input type='text' nama='last_name' placeholder='Last Name' class='text' />
-		    				</div>
-		    			</div>
-		    			<div class='form_row'>
-		    				<div class='form_input icon_email'>
-		    					<input type='email' name='email' placeholder='Email' class='text' />
-		    				</div>
-		    			</div>
-		    			<div class='form_row'>
-		    				<div class='form_input'>
-		    				
-			    				<textarea placeholder="Briefly tell us about your application and your goals, let us know how we can help." class='form_textarea'></textarea>
-			    			</div>
-		    			</div>
-		    			<div class='form_row'>
-		    				<input type='submit' name='submit' class='form_submit' value='Send Message' />
-		    			</div>
-		    		</div>
-	    		</div>
-	    		<div class='two_cols'>
-	    			<div class='extra_content_description'>
-	    				<h4>Need more<br>information about us?</h4>
-	    				<p>Maybe you like the approach of our school, or you found something that it’s not really clear for you. To assist you further we’ve prepared this PDF, make sure you read it, most of the information you need to apply will be there.</p>
-	    				<a href="#" class='download_file'>Documentation/Application.pdf (3 mb.)</a>
-	    			</div>
-	    		</div>
-	    	</div>
-    	</div>
-    </section>
+    <?php 
 
+    $contact_heading = get_field('contact_heading',$frontpage_id);
+    $contact_show_section = get_field('contact_show_section',$frontpage_id);
+    $contact_right_content = get_field('contact_right_content',$frontpage_id);
+    if($contact_show_section == 'Yes'){ 
+    ?>
+	    <section class='content contact'>
+	    	<div class='inner_wrapper'>
+	    		<div class='two_cols_wrapper'>
+	    			<div class='two_cols'>
+	    				<?php if(!empty($contact_heading)) {?>
+				    		<div class='content_heading'>
+				    			<h2><?php echo $contact_heading; ?></h2>
+				    		</div>
+			    		<?php } ?>
+			    		<div class='form_wrapper'>
+			    			<?php echo do_shortcode( '[contact-form-7 id="20" title="Home Form"]' ); ?>
+			    		</div>
+		    		</div>
+		    		<div class='two_cols'>
+		    			<div class='extra_content_description'>
+		    				<?php echo $contact_right_content; ?>
+		    				<?php if( have_rows('contact_right_documents',$frontpage_id) ): ?>
+		    					<div class='download_files'>
+			    					<?php while( have_rows('contact_right_documents' ,$frontpage_id) ): the_row(); 
+								        $file = get_sub_field('file');
+								        // pr($file);
+								        ?>
+								        <a href="<?php echo $file['url']?>" target="_blank" class='download_file'><?php echo $file['filename']?> (<?php echo formatSizeUnits($file['filesize']); ?>)</a>
+						        	<?php endwhile; ?>
+					        	</div>
+				         	<?php endif; ?>
+		    				
+		    			</div>
+		    		</div>
+		    	</div>
+	    	</div>
+	    </section>
+	<?php } ?>
 </section>
 
 <?php get_footer(); ?>

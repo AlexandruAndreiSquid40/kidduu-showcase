@@ -4,6 +4,7 @@ function fm_register_my_menus() {
     register_nav_menus(
             array(
                 'header-menu' => __('Header Menu'),
+                'footer-menu' => __('Footer Menu'),
             )
     );
 }
@@ -87,6 +88,38 @@ add_filter('upload_mimes', 'cc_mime_types');
  add_post_type_support( 'events', 'excerpt' );
 
 
+
+
+function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+}
+
 // include_once 'cpt/test.php';
 include_once 'cpt/cpt_events.php';
 include 'helper/helper.php';
@@ -94,4 +127,5 @@ include 'inc/breadcrumbs.php';
 include 'inc/widget-class.php';
 include 'inc/widget-links/widget-links.php';
 include 'inc/options.php';
+include 'inc/options-acf.php';
 include 'inc/comment.php';

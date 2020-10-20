@@ -1698,6 +1698,15 @@ nav .header-menu li:hover a {
     position:relative;
     text-decoration:none;
     background-color:#F3F3F5;
+    margin-bottom:15px;
+    margin-right:15px;
+}
+.content.contact .two_cols_wrapper .two_cols .extra_content_description .download_files {
+    display:flex;
+    flex-direction:row;
+    max-width:100%;
+    justify-content: space-between;
+    flex-wrap:wrap;
 }
 .content.contact .two_cols_wrapper .two_cols .extra_content_description .download_file:before {
     position: absolute;
@@ -1764,13 +1773,14 @@ nav .header-menu li:hover a {
     height:auto;
 }
 
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus {
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu {
     display:flex;
     flex-direction:row;
     max-width:100%;
     margin-bottom:5rem;
+    list-style:none;
 }
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu {
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu > .menu-item{
     max-width:25%;
     width:100%;
     padding-right:4rem;
@@ -1779,20 +1789,24 @@ nav .header-menu li:hover a {
     -o-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu h4 {
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu > li > a {
     font-size:1.6rem;
     font-weight:bold;
     color:#1C2642;
-        font-family: 'SF Pro Display', Arial;
+    font-family: 'SF Pro Display', Arial;
+    text-decoration:none;
 }
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu ul {
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu > li > a:hover {
+    text-decoration:underline;
+}
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu li > ul {
     padding-top:2rem;
     list-style:none;
     padding-left:0px;
     margin-left:0px;
 }
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu ul li {}
-.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu ul li a {
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu li > ul li {}
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu li > ul li a {
     font-size:1.6rem;
     font-family: 'SF Pro Display', Arial;
     color:#1C2642;
@@ -1800,6 +1814,9 @@ nav .header-menu li:hover a {
     font-weight:500;
     text-decoration:none;
     word-break: break-all;
+}
+.content.footer .two_cols_wrapper .two_cols .col_row .footer_menus .footer_menu li > ul li a:hover {
+    text-decoration:underline;
 }
 
 .content.footer .two_cols_wrapper .two_cols .col_row .socials_wrapper {
