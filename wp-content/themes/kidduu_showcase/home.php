@@ -20,7 +20,11 @@ $frontpage_id = get_option( 'page_on_front' );
 			        ?>
 			        <div class='slide' style='background-image:url("<?php echo $image; ?>");'>
 						<div class='inner_wrapper'>
+							<div class='mobile_image'>
+								<img src='<?php echo $image; ?>' />
+							</div>
 							<div class='main_banner'>
+								
 								<?php if(!empty($heading)){ ?>
 									<h1 class='heading'><?php echo $heading; ?></h1>
 								<?php } ?>
@@ -79,10 +83,23 @@ $frontpage_id = get_option( 'page_on_front' );
     <!-- END GLOBAL ANNOUNCEMENT -->
 
     <!-- CARDS -->
-    <?php if( have_rows('pages_repeater',$frontpage_id) ): ?>
+    <?php
+    $pages_section_heading_mobile = get_field('pages_section_heading_mobile',$frontpage_id);
+    $pages_section_description_mobile = get_field('pages_section_description_mobile',$frontpage_id);
+     if( have_rows('pages_repeater',$frontpage_id) ): ?>
 	<section class='content cards'>
 		<div class='inner_wrapper'>
 			<div class='cards_holder'>
+				<?php if(!empty($pages_section_heading_mobile) || !empty($pages_section_description_mobile)){ ?>
+		    		<div class='pages_top_mobile'>
+		    			<?php if(!empty($pages_section_heading_mobile)){ ?>
+		    				<h2><?php echo $pages_section_heading_mobile; ?></h2>
+		    			<?php } ?>
+		    			<?php if(!empty($pages_section_description_mobile)) { ?>
+		    				<?php echo $pages_section_description_mobile; ?>
+		    			<?php } ?>
+		    		</div>
+				<?php } ?>
 				<!-- CARD -->
 				<?php while( have_rows('pages_repeater' ,$frontpage_id) ): the_row(); 
 			        $custom_image = get_sub_field('image');

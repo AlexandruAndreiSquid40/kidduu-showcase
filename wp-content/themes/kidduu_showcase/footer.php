@@ -13,7 +13,7 @@
     			<div class='two_cols'>
 
                     <?php if(!empty($footer_logo)){ ?>
-    				<div class='col_row'>
+    				<div class='col_row col_logo'>
     					<div class='footer_school_logo'>
 	    					<a href="<?php echo esc_url(home_url()); ?>" class="logo">
 		                        <img src='<?php echo $footer_logo['url']; ?>' alt='logo' />
@@ -88,6 +88,14 @@
                  ?>
                 <?php if( have_rows('footer_under_gmap', 'option') ): ?> 
         			<div class='two_cols'>
+                        <?php 
+                        $footer_under_gmap_heading = get_field('footer_under_gmap_heading','option');
+                        if(!empty($footer_under_gmap_heading)){
+                        ?>
+                            <div class='mobile_heading_under_gmap'>
+                                <h3><?php echo $footer_under_gmap_heading; ?></h3>
+                            </div>
+                        <?php  } ?>
         				<div class='col_row'>
         					<div class='two_cols_wrapper'>
                                 <?php while( have_rows('footer_under_gmap' ,'option') ): the_row(); 

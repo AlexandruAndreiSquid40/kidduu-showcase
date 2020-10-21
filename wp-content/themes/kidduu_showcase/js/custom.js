@@ -8,10 +8,10 @@ jQuery(document).ready(function ($) {
             $('.menu').show();
         }
     });
-    $('.small_res_menu').click(function () {
-        $(this).toggleClass('active');
-        $('.menu').slideToggle();
-    });
+    // $('.small_res_menu').click(function () {
+    //     $(this).toggleClass('active');
+    //     $('.menu').slideToggle();
+    // });
 
     $('.banner_slider').slick({
         dots: false,
@@ -22,6 +22,7 @@ jQuery(document).ready(function ($) {
         fade: true,
         cssEase: 'linear',
         rows: 0, 
+        adaptiveHeight: true
     });
 
 
@@ -69,8 +70,27 @@ jQuery(document).ready(function ($) {
         cssEase: 'linear',
         rows: 0, // Fix vor v1.8.0-1 for not adding extra div
         prevArrow: "<a href='#' class='prevArrowCust'></a>",
-        nextArrow: "<a href='#' class='nextArrowCust'></a>"
-        
+        nextArrow: "<a href='#' class='nextArrowCust'></a>",
+        responsive: [
+            {
+              breakpoint: 990,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                arrows:false,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                centerPadding: '60px',
+                centerMode: true
+              }
+            }
+            
+          ]
     });
     $('.prevArrowCust, .nextArrowCust').click(function(e){
         e.preventDefault();
@@ -87,8 +107,29 @@ jQuery(document).ready(function ($) {
         cssEase: 'linear',
         rows: 0, // Fix vor v1.8.0-1 for not adding extra div
         prevArrow: "<a href='#' class='prevArrowCust'></a>",
-        nextArrow: "<a href='#' class='nextArrowCust'></a>"
-        
+        nextArrow: "<a href='#' class='nextArrowCust'></a>",
+        responsive: [
+            {
+              breakpoint: 990,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                dots:true,
+                arrows:false,
+                adaptiveHeight:true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                centerMode: true,
+                centerPadding: '60px'
+              }
+            }
+            
+          ]
     });
     // $('.content.events .events_slider .event_box.slick-active + .slick-active + .slick-active .event_box_pic').slideDown();
     // $('.events .events_slider').on('beforeChange', function(event, slick, currentSlide, nextSlide){
@@ -102,5 +143,26 @@ jQuery(document).ready(function ($) {
         $('nav.menu').toggleClass('open');
         // $('.header__nav').slideToggle();
         return false;
+    });
+
+    $('.footer_menus .footer_menu > .menu-item.menu-item-has-children a').prepend('<span class="sub_open"></span>');
+
+    $('#menu-footer-menu > li.menu-item-has-children > a').each(function(){
+        
+        var curr_click = $(this).find('.sub_open');
+        curr_click.click(function(e){
+            var parent = $(this).parent().parent();
+            if(parent.hasClass('open')){
+                parent.removeClass('open');
+                parent.find('.sub-menu').slideUp(300);
+            }else{
+                $('#menu-footer-menu > li.menu-item-has-children').removeClass('open');
+                $('#menu-footer-menu > li.menu-item-has-children .sub-menu').slideUp(300);
+                parent.addClass('open');
+                parent.find('.sub-menu').slideDown(300);
+
+            }
+            e.preventDefault();
+        });
     });
 });
