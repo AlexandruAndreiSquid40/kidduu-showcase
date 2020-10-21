@@ -361,6 +361,7 @@ $frontpage_id = get_option( 'page_on_front' );
 									            
 				       }
 					}
+					
 				    ?>
 		    		
 		    		
@@ -520,7 +521,9 @@ $frontpage_id = get_option( 'page_on_front' );
 	                    
 	                    ?>
 	                    <div class='feed_box'>
+
 	                    	<?php if($type == 'image' || $type== 'retweet' && $sub_type== 'image'){?>
+
 							    <div class='twitter_top'>
 							        <div class='twitter_user_icon'>
 							        	<?php if($t_logo){ ?>
@@ -556,6 +559,7 @@ $frontpage_id = get_option( 'page_on_front' );
 							    </div>
 							<?php }else if($type=='gallery' || $type== 'retweet' && $sub_type== 'gallery'){
 								?>
+
 								<div class='twitter_top'>
 							        <div class='twitter_user_icon'>
 							        	<?php if($t_logo){ ?>
@@ -746,8 +750,8 @@ $frontpage_id = get_option( 'page_on_front' );
 								            </div>
 							        	<?php } ?>
 							        	<div class='twitter_post_description'>
-						            	<a href="https://twitter.com/i/web/status/<?php echo $items['id']; ?>" target='_blank' rel="external">Read More</a>
-						            </div>
+							            	<a href="https://twitter.com/i/web/status/<?php echo $items['id']; ?>" target='_blank' rel="external">Read More</a>
+							            </div>
 							        </div>
 							    </div>
 							    <div class='twitter_bottom'>
@@ -763,7 +767,34 @@ $frontpage_id = get_option( 'page_on_front' );
 							        <!-- END case video -->
 							    </div>
 								
-							<?php } ?>
+							<?php }else{
+								?>
+								<div class='twitter_top'>
+							        <div class='twitter_user_icon'>
+							        	<?php if($t_logo){ ?>
+							            	<img src='<?php echo $t_logo; ?>' alt='logo <?php echo $t_school_name; ?>' />
+							        	<?php }else{
+
+							        	} ?>
+							        </div>
+							        <div class='twitter_post_desc'>
+							            <div class='twitter_user_info'>
+
+							            	<b><a href="https://twitter.com/<?php echo $t_school_screen_name; ?>"><?php echo $t_school_name; ?></a></b> <span class='t_user'>@<?php echo $t_school_screen_name; ?></span><span class='t_date'> <?php echo $date; ?></span> 
+							            </div>
+							            <?php if($t_full_text) { ?>
+								            <div class='twitter_post_description'>
+								                <p><?php echo $t_full_text; ?></p>
+								                
+								            </div>
+							        	<?php } ?>
+							        	<div class='twitter_post_description'>
+							            	<a href="https://twitter.com/i/web/status/<?php echo $items['id']; ?>" target='_blank' rel="external">Read More</a>
+							            </div>
+							        </div>
+							    </div>
+								<?php 
+							} ?>
 						</div>
 	                    <?php
 	                  	

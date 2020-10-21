@@ -97,5 +97,10 @@ jQuery(document).ready(function ($) {
     //     // $('.content.events .events_slider .event_box.slick-active + .slick-active + .slick-active .event_box_pic').slideDown();
     // });
    
-
+    $('.menu-trigger').on('click', function() {
+        $(this).toggleClass('open');
+        $('nav.menu').toggleClass('open');
+        // $('.header__nav').slideToggle();
+        return false;
+    });
 });

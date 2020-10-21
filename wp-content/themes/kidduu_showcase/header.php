@@ -19,15 +19,16 @@
         <header class="header">
             <div class='inner_wrapper'>
                 <div class='header_inner'>
-                    
-                    <a href="<?php echo esc_url(home_url()); ?>" class="logo">
-                        <img src='<?php bloginfo('template_directory'); ?>/images/logo_new.png' alt='logo' />
-                    </a>
-                    <span class="small_res_menu">
-                        <span></span>
-                        <span></span>
-                        <span></span> 
-                    </span>
+                    <?php
+                    $header_logo = get_field('global_logo_header', 'option');
+                    if(!empty($header_logo)){
+                    ?>
+                        <a href="<?php echo esc_url(home_url()); ?>" class="logo">
+                            <img src='<?php echo $header_logo['url'] ?>' alt='logo' />
+                        </a>
+                    <?php } ?>
+                    <a href="#" class="menu-trigger"><span></span></a>
+                   
                     <nav class="menu">
                         <?php wp_nav_menu(array('theme_location' => 'header-menu', 'menu_class' => 'header-menu')); ?>
                     </nav>
@@ -37,11 +38,11 @@
             <div data-test='<?php echo gethostname(); ?>' data-test2='<?php php_uname(); ?>'></div>
             <?php  
             
-            if(gethostname() == "DESKTOP-BGF1S1G" || php_uname() == 'DESKTOP-BGF1S1G'){
+            // if(gethostname() == "DESKTOP-BGF1S1G" || php_uname() == 'DESKTOP-BGF1S1G'){
 
-            }else{
-                wp_safe_redirect( esc_url(home_url()).'/splash' );
-            }
+            // }else{
+            //     wp_safe_redirect( esc_url(home_url()).'/splash' );
+            // }
             ?>
         </header>
        
