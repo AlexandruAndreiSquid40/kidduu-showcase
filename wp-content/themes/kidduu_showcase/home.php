@@ -295,7 +295,8 @@ $frontpage_id = get_option( 'page_on_front' );
     	<?php
 
     	$today = date('Ymd');
-
+    	global $wpdb;
+    	
     	$event_date_future = $wpdb->get_results("SELECT * FROM `wp_postmeta` WHERE `meta_key` LIKE 'event_date' AND `meta_value` >=  CURDATE()");
     	
     	$event_array = [];
